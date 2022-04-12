@@ -1,6 +1,64 @@
 <template>
   <div>
-    <div id="div1">
+    <div style="margin-top: 20px">
+      <div style="float:left">
+         <el-button type="primary" @click="addHead()" >新表头</el-button>
+      </div>
+      <div style="margin-top: 20px">
+       <template>
+          <el-table
+            :data="tableData"
+            border
+            style="width: 90%">
+            <el-table-column
+              fixed
+              prop="id"
+              label="id"
+              width="300">
+            </el-table-column>
+            <el-table-column
+              prop="name"
+              label="表名"
+              width="220">
+              <template slot-scope="scope">
+                   <el-input v-model="scope.row.name" placeholder="请输入内容"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="pinyin"
+              label="拼音"
+              width="120">
+            </el-table-column>
+             <el-table-column
+              prop="expressions"
+              label="表达式"
+              width="350">
+               <template slot-scope="scope">
+                   <el-input v-model="scope.row.expressions" placeholder="请输入内容"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="order"
+              label="排序号"
+              width="120">
+              <template slot-scope="scope">
+                   <el-input v-model="scope.row.order" placeholder="请输入内容"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column
+              fixed="right"
+              label="操作"
+              width="100">
+              <template slot-scope="scope">
+                <el-button @click="handleEdit(scope.$index, scope.row)" type="text" size="small">编辑</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </template>
+         </div>
+    </div>
+
+    <div id="div1" style="margin-top: 20px">
       <div id="div1">
       <el-select v-model="selectValue" placeholder="请选择">
         <el-option
@@ -66,6 +124,18 @@ export default {
   },
   methods: {
     // 获取表格选中时的数据
+    addHead(){
+      let headNew= {};
+      this.tableData.push(headNew)
+    },
+    handleEdit(index, row) {
+       var url = "http://localhost:8080/head";
+        console.log(index, row);
+        this.$http.post(url,row) 
+            .then(res=> { console.log(res) }) 
+            .catch(err=> { console.log(err)});
+
+    },
     selectArInfo(val) {
       this.selectArr = val;
     },
